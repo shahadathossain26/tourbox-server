@@ -45,7 +45,16 @@ async function run() {
             const service = await servicesCollection.findOne(query);
             res.send(service);
         })
+        //Loading specific service Reviews
+        app.get('/reviews/:id', async (req, res) => {
+            const id = req.params.id;
+            let query = { service_id: id }
+            const cursor = reviewsCollection.find(query);
+            const review = await cursor.toArray();
+            res.send(review);
 
+        })
+        //Adding reviews to Database
         app.post('/reviews', async (req, res) => {
             const review = req.body;
             const result = await reviewsCollection.insertOne(review);
